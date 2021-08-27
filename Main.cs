@@ -54,7 +54,7 @@ namespace curdOperations
                     button.HeaderText = "Action";
                     button.Text = "Edit";
                     button.UseColumnTextForButtonValue = true; //dont forget this line
-                    dataGridView.Columns.Add(button);
+                    dataGridView.Columns.Add(button); 
                 }
             }
             catch (Exception ex)
