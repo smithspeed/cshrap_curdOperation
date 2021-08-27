@@ -48,13 +48,24 @@ namespace curdOperations
 
                 dataGridView.DataSource = dt;
 
+                dataGridView.Columns[0].Visible = false;
+
                 DataGridViewButtonColumn button = new DataGridViewButtonColumn();
                 {
-                    button.Name = "Action";
-                    button.HeaderText = "Action";
+                    button.Name = "Edit";
+                    button.HeaderText = "Edit";
                     button.Text = "Edit";
                     button.UseColumnTextForButtonValue = true; //dont forget this line
                     dataGridView.Columns.Add(button); 
+                }
+
+                DataGridViewButtonColumn delButton = new DataGridViewButtonColumn();
+                {
+                    delButton.Name = "Delete";
+                    delButton.HeaderText = "Delete";
+                    delButton.Text = "Delete";
+                    delButton.UseColumnTextForButtonValue = true;
+                    dataGridView.Columns.Add(delButton);
                 }
             }
             catch (Exception ex)
@@ -68,5 +79,65 @@ namespace curdOperations
             }
 
         }
+
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //Console.WriteLine("this is edit :" + dataGridView.Columns[e.ColumnIndex].Name);
+
+            //Deleting Row
+            if (dataGridView.Columns[e.ColumnIndex].Name == "Delete")
+            {
+                //Console.WriteLine("row index " + e.RowIndex);
+
+                int deleteId = (Int32)dataGridView.Rows[e.RowIndex].Cells[2].Value;
+
+                Console.WriteLine("deleting row Id :  " + deleteId);
+
+                this.deleteStudentInfo(deleteId);
+
+            }
+        }
+
+        private void deleteStudentInfo(int studentId)
+        {
+            if(studentId > 0)
+            {
+                string connString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
+
+                SqlConnection con = new SqlConnection(connString);
+
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.CommandText = "sp_deleteStudent";
+
+                cmd.Parameters.AddWithValue("@id", studentId);
+
+                cmd.Connection = con;
+
+                try
+                {
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    con.Close();
+                    con.Dispose();
+
+                    this.showAllData();
+                }
+
+            }
+        }
+
     }
 }
