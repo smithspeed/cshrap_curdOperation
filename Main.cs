@@ -139,5 +139,11 @@ namespace curdOperations
             }
         }
 
+        private void addNewStudent(object sender, EventArgs e)
+        {
+            Form addNewStudent = new addNew();
+
+            addNewStudent.Show();
+        }
     }
 }
