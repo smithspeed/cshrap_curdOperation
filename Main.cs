@@ -157,6 +157,8 @@ namespace curdOperations
 
         private void addNewStudent(object sender, EventArgs e)
         {
+            this.studentId = 0;
+
             Form addNewStudent = new addNew(this);
 
             addNewStudent.Show();

@@ -28,8 +28,20 @@ namespace curdOperations
 
             if(studId > 0)
             {
+                this.Text = "Update Student";
+
+                this.addButton.Text = "Update Student";
+
                 this.getStudentInfo();
             }
+            else
+            {
+                this.Text = "Add Student";
+
+                this.addButton.Text = "Add Student";
+            }
+
+            
         }
 
         private void addStudent(object sender, EventArgs e)
@@ -80,11 +92,45 @@ namespace curdOperations
 
         public void getStudentInfo()
         {
-            int studId =  main1.studentId;
+            //Console.WriteLine("student id :" + studId);
 
-            Console.WriteLine("student id :" + studId);
+            string connString = ConfigurationManager.ConnectionStrings["dbConn"].ConnectionString;
 
-            this.Show();
+            SqlConnection con = new SqlConnection(connString);
+
+            SqlCommand cmd = new SqlCommand();
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "sp_GetStudentInfo";
+            cmd.Parameters.AddWithValue("@studId", studId);
+            cmd.Connection = con;
+
+            try
+            {
+                con.Open();
+
+                SqlDataReader sda = cmd.ExecuteReader();
+
+                sda.Read();
+
+                nameTextBox.Text = sda["name"].ToString();
+                mobileTextBox.Text = sda["mobile"].ToString();
+                emailIdTextBox.Text = sda["emailId"].ToString();
+                genderComboBox.SelectedItem = sda["gender"].ToString();
+                Console.WriteLine("staus : " + sda["status"].GetType());
+                statusComboBox.SelectedItem = sda["status"].ToString() == "1" ? "Active" : "Inactive";
+
+                this.Show();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
         }
     }
 }
