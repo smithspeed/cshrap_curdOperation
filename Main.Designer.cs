@@ -55,6 +55,7 @@ namespace curdOperations
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.Size = new System.Drawing.Size(776, 336);
             this.dataGridView.TabIndex = 1;
+            this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
             // 
             // button1
             // 

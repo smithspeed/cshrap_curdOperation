@@ -14,7 +14,7 @@ namespace curdOperations
 {
     public partial class Main : Form
     {
-        
+        public int studentId = 0;
         public Main()
         {
             InitializeComponent();
@@ -91,11 +91,27 @@ namespace curdOperations
 
                 int deleteId = (Int32)dataGridView.Rows[e.RowIndex].Cells[2].Value;
 
-                Console.WriteLine("deleting row Id :  " + deleteId);
+                //Console.WriteLine("deleting row Id :  " + deleteId);
 
                 this.deleteStudentInfo(deleteId);
 
             }
+
+            if(dataGridView.Columns[e.ColumnIndex].Name == "Edit")
+            {
+                int editId = (Int32)dataGridView.Rows[e.RowIndex].Cells[2].Value;
+
+                this.updateStudentInfo(editId);
+            }
+        }
+
+        private void updateStudentInfo(int editId)
+        {
+            this.studentId = editId;
+
+            Form editStudent = new addNew(this);
+
+            //editStudent.Show();
         }
 
         private void deleteStudentInfo(int studentId)
@@ -141,7 +157,7 @@ namespace curdOperations
 
         private void addNewStudent(object sender, EventArgs e)
         {
-            Form addNewStudent = new addNew();
+            Form addNewStudent = new addNew(this);
 
             addNewStudent.Show();
         }
